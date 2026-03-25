@@ -1,4 +1,4 @@
-name: Step 0
+name: Step 0 # 실습 시작
 
 on:
   push:
@@ -17,14 +17,14 @@ jobs:
   start_exercise:
     if: |
       !github.event.repository.is_template
-    name: Start Exercise
-    uses: skills/exercise-toolkit/.github/workflows/start-exercise.yml@v0.8.1
+    name: 실습 시작
+    uses: skills-kr/exercise-toolkit/.github/workflows/start-exercise.yml@kr-v0.6.0
     with:
-      exercise-title: "Code with Codespaces"
-      intro-message: "Let's create a pre-configured environment to simplify development!"
+      exercise-title: "Codespaces로 코딩하기"
+      intro-message: "개발을 간소화하기 위해 사전 구성된 환경을 만들어 봅시다!"
 
   post_next_step_content:
-    name: Post next step content
+    name: 다음 단계 내용 게시
     runs-on: ubuntu-latest
     needs: [start_exercise]
     env:
@@ -36,14 +36,14 @@ jobs:
         with:
           ref: main
 
-      - name: Get response templates
+      - name: 응답 템플릿 가져오기
         uses: actions/checkout@v4
         with:
-          repository: skills/exercise-toolkit
+          repository: skills-kr/exercise-toolkit
           path: exercise-toolkit
-          ref: v0.5.0
+          ref: kr-v0.6.0
 
-      - name: Build comment - add step content
+      - name: 댓글 빌드 - 단계 내용 추가
         id: build-comment
         uses: skills/action-text-variables@v2
         with:
@@ -52,7 +52,7 @@ jobs:
             login: ${{ github.actor }}
             full_repo_name: ${{ github.repository }}
 
-      - name: Create comment - add step content
+      - name: 댓글 생성 - 단계 내용 추가
         run: |
           gh issue comment "$ISSUE_URL" \
             --body "$ISSUE_BODY"
@@ -60,15 +60,35 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_BODY: ${{ steps.build-comment.outputs.updated-text }}
 
-      - name: Create comment - watching for progress
+      - name: 댓글 생성 - 진행 상황 확인 중
         run: |
           gh issue comment "$ISSUE_URL" \
             --body-file "exercise-toolkit/markdown-templates/step-feedback/watching-for-progress.md"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Enable next step workflow
+      - name: 다음 워크플로우 활성화
         run: |
           gh workflow enable "Step 1"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Workshop Tracker에 시작 보고
+        if: success()
+        continue-on-error: true
+        run: |
+          SESSION_ID=$(jq -r '.sessionId' .github/workshop-config.json)
+          TRACK=$(jq -r '.track' .github/workshop-config.json)
+          API_URL=$(jq -r '.apiUrl' .github/workshop-config.json)
+          curl -s -X POST "$API_URL" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "sessionId": "'"$SESSION_ID"'",
+              "type": "start",
+              "step": 0,
+              "description": "실습 시작",
+              "username": "'"$GITHUB_ACTOR"'",
+              "repo": "'"$GITHUB_REPOSITORY"'",
+              "track": "'"$TRACK"'",
+              "runId": "'"$GITHUB_RUN_ID"'"
+            }' || true

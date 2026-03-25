@@ -1,4 +1,4 @@
-name: Step 3
+name: Step 3 # Codespace 커스터마이징
 
 on:
   push:
@@ -17,11 +17,11 @@ env:
 
 jobs:
   find_exercise:
-    name: Find Exercise Issue
-    uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@v0.5.0
+    name: 실습 이슈 찾기
+    uses: skills-kr/exercise-toolkit/.github/workflows/find-exercise-issue.yml@kr-v0.6.0
 
   check_step_work:
-    name: Check step work
+    name: 단계 작업 확인
     runs-on: ubuntu-latest
     needs: [find_exercise]
     env:
@@ -31,14 +31,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get response templates
+      - name: 응답 템플릿 가져오기
         uses: actions/checkout@v4
         with:
-          repository: skills/exercise-toolkit
+          repository: skills-kr/exercise-toolkit
           path: exercise-toolkit
-          ref: v0.5.0
+          ref: kr-v0.6.0
 
-      - name: Update comment - checking work
+      - name: 댓글 업데이트 - 작업 확인 중
         run: |
           gh issue comment "$ISSUE_URL" \
             --body-file exercise-toolkit/markdown-templates/step-feedback/checking-work.md \
@@ -48,7 +48,7 @@ jobs:
 
       # START: Check practical exercise
 
-      - name: Check features set
+      - name: features 설정 확인
         id: check-features-set
         continue-on-error: true
         uses: skills/action-keyphrase-checker@v1
@@ -58,7 +58,7 @@ jobs:
           case-sensitive: false
           minimum-occurrences: 1
 
-      - name: Check customizations set
+      - name: customizations 설정 확인
         id: check-customizations-set
         continue-on-error: true
         uses: skills/action-keyphrase-checker@v1
@@ -68,7 +68,7 @@ jobs:
           case-sensitive: false
           minimum-occurrences: 1
 
-      - name: Check command set
+      - name: command 설정 확인
         id: check-command-set
         continue-on-error: true
         uses: skills/action-keyphrase-checker@v1
@@ -78,7 +78,7 @@ jobs:
           case-sensitive: false
           minimum-occurrences: 1
 
-      - name: Check postCreate script
+      - name: postCreate 스크립트 확인
         id: check-postcreate-script
         continue-on-error: true
         uses: skills/action-keyphrase-checker@v1
@@ -88,7 +88,7 @@ jobs:
           case-sensitive: false
           minimum-occurrences: 1
 
-      - name: Build message - step results
+      - name: 메시지 빌드 - 단계 결과
         id: build-message-step-results
         uses: skills/action-text-variables@v2
         with:
@@ -97,16 +97,16 @@ jobs:
             step_number: 3
             passed: ${{ !contains(steps.*.outcome, 'failure') }}
             results_table:
-              - description: "Features added to devcontainer.json"
+              - description: "devcontainer.json에 Features 추가"
                 passed: ${{ steps.check-features-set.outcome == 'success' }}
-              - description: "Customizations added to devcontainer.json"
+              - description: "devcontainer.json에 Customizations 추가"
                 passed: ${{ steps.check-customizations-set.outcome == 'success' }}
-              - description: "Postcreate command added to devcontainer.json"
+              - description: "devcontainer.json에 postCreate 명령 추가"
                 passed: ${{ steps.check-command-set.outcome == 'success' }}
-              - description: "Postcreate script created"
+              - description: "postCreate 스크립트 생성"
                 passed: ${{ steps.check-postcreate-script.outcome == 'success' }}
 
-      - name: Create comment - step results
+      - name: 댓글 생성 - 단계 결과
         run: |
           gh issue comment "$ISSUE_URL" \
             --body "$COMMENT_BODY" \
@@ -115,13 +115,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMMENT_BODY: ${{ steps.build-message-step-results.outputs.updated-text }}
 
-      - name: Fail job if not all checks passed
+      - name: 모든 검사를 통과하지 못하면 실패
         if: contains(steps.*.outcome, 'failure')
         run: exit 1
 
       # END: Check practical exercise
 
-      - name: Build message - step finished
+      - name: 메시지 빌드 - 단계 완료
         id: build-message-step-finish
         uses: skills/action-text-variables@v2
         with:
@@ -129,7 +129,7 @@ jobs:
           template-vars: |
             next_step_number: 4
 
-      - name: Update comment - step finished
+      - name: 댓글 업데이트 - 단계 완료
         run: |
           gh issue comment "$ISSUE_URL" \
             --body "$ISSUE_BODY"
@@ -138,7 +138,7 @@ jobs:
           ISSUE_BODY: ${{ steps.build-message-step-finish.outputs.updated-text }}
 
   post_next_step_content:
-    name: Post next step content
+    name: 다음 단계 내용 게시
     needs: [find_exercise, check_step_work]
     runs-on: ubuntu-latest
     env:
@@ -148,30 +148,50 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get response templates
+      - name: 응답 템플릿 가져오기
         uses: actions/checkout@v4
         with:
-          repository: skills/exercise-toolkit
+          repository: skills-kr/exercise-toolkit
           path: exercise-toolkit
-          ref: v0.5.0
+          ref: kr-v0.6.0
 
-      - name: Create comment - add step content
+      - name: 댓글 생성 - 단계 내용 추가
         run: |
           gh issue comment "$ISSUE_URL" \
             --body-file "$STEP_4_FILE"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create comment - watching for progress
+      - name: 댓글 생성 - 진행 상황 확인 중
         run: |
           gh issue comment "$ISSUE_URL" \
             --body-file exercise-toolkit/markdown-templates/step-feedback/watching-for-progress.md
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Disable current workflow and enable next one
+      - name: 현재 워크플로우 비활성화 및 다음 워크플로우 활성화
         run: |
           gh workflow disable "Step 3"
           gh workflow enable "Step 4"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Workshop Tracker에 단계 보고
+        if: success()
+        continue-on-error: true
+        run: |
+          SESSION_ID=$(jq -r '.sessionId' .github/workshop-config.json)
+          TRACK=$(jq -r '.track' .github/workshop-config.json)
+          API_URL=$(jq -r '.apiUrl' .github/workshop-config.json)
+          curl -s -X POST "$API_URL" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "sessionId": "'"$SESSION_ID"'",
+              "type": "step",
+              "step": 3,
+              "description": "Codespace 커스터마이징",
+              "username": "'"$GITHUB_ACTOR"'",
+              "repo": "'"$GITHUB_REPOSITORY"'",
+              "track": "'"$TRACK"'",
+              "runId": "'"$GITHUB_RUN_ID"'"
+            }' || true

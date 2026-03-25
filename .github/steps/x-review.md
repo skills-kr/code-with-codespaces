@@ -1,23 +1,23 @@
-## Review
+## 리뷰
 
 <img src="https://octodex.github.com/images/welcometocat.png" alt=celebrate width=300 align=right>
 
-Here's a recap of all the tasks you've accomplished in your repository:
+저장소에서 수행한 모든 작업을 요약합니다:
 
-- You learned how to create a codespace and push code to your repository from the codespace.
-- You learned how to use custom images, features, extensions, and scripts in your codespace.
-- You learned how to test run it like an onboarding developer.
+- Codespace를 만들고 Codespace에서 저장소로 코드를 푸시하는 방법을 배웠습니다.
+- 커스텀 이미지, 기능, 확장 프로그램, 스크립트를 Codespace에서 사용하는 방법을 배웠습니다.
+- 온보딩 개발자처럼 테스트 실행하는 방법을 배웠습니다.
 
-### Additional learning and resources
+### 추가 학습 및 리소스
 
-- [Developing in a codespace](https://docs.github.com/en/codespaces/developing-in-codespaces/developing-in-a-codespace). Learn how to delete a codespace, open an existing codespace, connect to a private network, forward ports, and much more.
-- [Set up your repository](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/introduction-to-dev-containers). Learn how to set minimum machine specs for a codespace, add badges, set up a template repo, and much more.
-- [Personalize and customize GitHub Codespaces](https://docs.github.com/en/codespaces/customizing-your-codespace/personalizing-github-codespaces-for-your-account). Learn how to use setting sync for your codespace, add dotfiles, set the default region, set the default editor, and much more.
-- [Prebuild your codespace](https://docs.github.com/en/codespaces/prebuilding-your-codespaces/about-github-codespaces-prebuilds)
-- [Manage your codespace](https://docs.github.com/en/codespaces/managing-codespaces-for-your-organization/enabling-github-codespaces-for-your-organization)
+- [Codespace에서 개발하기](https://docs.github.com/en/codespaces/developing-in-codespaces/developing-in-a-codespace). Codespace 삭제, 기존 Codespace 열기, 사설 네트워크 연결, 포트 포워딩 등을 배워보세요.
+- [저장소 설정하기](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/introduction-to-dev-containers). 최소 머신 사양 설정, 배지 추가, 템플릿 저장소 설정 등을 배워보세요.
+- [GitHub Codespaces 개인화 및 커스터마이징](https://docs.github.com/en/codespaces/customizing-your-codespace/personalizing-github-codespaces-for-your-account). 설정 동기화, dotfiles 추가, 기본 지역 설정, 기본 에디터 설정 등을 배워보세요.
+- [Codespace 사전 빌드하기](https://docs.github.com/en/codespaces/prebuilding-your-codespaces/about-github-codespaces-prebuilds)
+- [Codespace 관리하기](https://docs.github.com/en/codespaces/managing-codespaces-for-your-organization/enabling-github-codespaces-for-your-organization)
 
-### What's next?
+### 다음 단계
 
-- [Take another GitHub Skill exercise](https://github.com/skills).
-- [Read the Get started with GitHub docs](https://docs.github.com/en/get-started).
-- To find projects to contribute to, check out [GitHub Explore](https://github.com/explore).
+- [다른 GitHub Skills 실습을 해보세요](https://github.com/skills).
+- [GitHub 시작하기 문서를 읽어보세요](https://docs.github.com/en/get-started).
+- 기여할 프로젝트를 찾으려면 [GitHub Explore](https://github.com/explore)를 확인하세요.

@@ -1,4 +1,4 @@
-name: Step 4
+name: Step 4 # Codespace 사용하기
 
 on:
   issue_comment:
@@ -14,17 +14,17 @@ env:
 
 jobs:
   required_issue_comment_keywords:
-    name: Check issue comment text for required keyword
+    name: 이슈 댓글 키워드 확인
     runs-on: ubuntu-latest
     steps:
-      - name: Check for professortocat reference
+      - name: professortocat 참조 확인
         uses: skills/action-keyphrase-checker@v1
         with:
           text: ${{ github.event.comment.body }}
           keyphrase: 'professortocat'
           case-sensitive: false
           minimum-occurrences: 1
-      - name: Check for codespace reference
+      - name: codespace 참조 확인
         uses: skills/action-keyphrase-checker@v1
         with:
           text: ${{ github.event.comment.body }}
@@ -34,11 +34,11 @@ jobs:
 
   find_exercise:
     needs: [required_issue_comment_keywords]
-    name: Find Exercise Issue
-    uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@v0.5.0
+    name: 실습 이슈 찾기
+    uses: skills-kr/exercise-toolkit/.github/workflows/find-exercise-issue.yml@kr-v0.6.0
 
   post_review_content:
-    name: Post review content
+    name: 리뷰 내용 게시
     needs: [find_exercise]
     runs-on: ubuntu-latest
     env:
@@ -48,7 +48,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create comment - add step content
+      - name: 댓글 생성 - 단계 내용 추가
         run: |
           gh issue comment "$ISSUE_URL" \
             --body-file "$REVIEW_FILE"
@@ -56,14 +56,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   finish_exercise:
-    name: Finish Exercise
+    name: 실습 완료
     needs: [find_exercise, post_review_content]
-    uses: skills/exercise-toolkit/.github/workflows/finish-exercise.yml@v0.5.0
+    uses: skills-kr/exercise-toolkit/.github/workflows/finish-exercise.yml@kr-v0.6.0
     with:
       issue-url: ${{ needs.find_exercise.outputs.issue-url }}
+      exercise-title: "Codespaces로 코딩하기"
 
   disable_workflow:
-    name: Disable this workflow
+    name: 워크플로우 비활성화
     needs: [find_exercise, post_review_content]
     runs-on: ubuntu-latest
 
@@ -71,7 +72,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Disable current workflow
+      - name: 현재 워크플로우 비활성화
         run: gh workflow disable "${{github.workflow}}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Workshop Tracker에 완료 보고
+        if: success()
+        continue-on-error: true
+        run: |
+          SESSION_ID=$(jq -r '.sessionId' .github/workshop-config.json)
+          TRACK=$(jq -r '.track' .github/workshop-config.json)
+          API_URL=$(jq -r '.apiUrl' .github/workshop-config.json)
+          curl -s -X POST "$API_URL" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "sessionId": "'"$SESSION_ID"'",
+              "type": "end",
+              "step": 4,
+              "description": "Codespace 테스트",
+              "username": "'"$GITHUB_ACTOR"'",
+              "repo": "'"$GITHUB_REPOSITORY"'",
+              "track": "'"$TRACK"'",
+              "runId": "'"$GITHUB_RUN_ID"'"
+            }' || true

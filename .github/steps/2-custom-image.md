@@ -1,33 +1,33 @@
-## Step 2: Use a custom image in your codespace
+## 2단계: Codespace에서 커스텀 이미지 사용하기
 
-The didn't specify any configuration for the codespace we just created, so GitHub used a default Docker image. While this is very useful, it won't be consistent and it doesn't version lock our runtime environment. Specifying the configuration is important to keep the development environment repeatable.
+방금 만든 Codespace에는 특별한 구성을 지정하지 않았기 때문에 GitHub가 기본 Docker 이미지를 사용했습니다. 이것은 매우 유용하지만, 일관성이 없고 런타임 환경을 버전 고정하지 않습니다. 개발 환경을 반복 가능하게 유지하려면 구성을 지정하는 것이 중요합니다.
 
-Let's do that now by providing a specific docker container image.
+특정 Docker 컨테이너 이미지를 제공하여 이를 설정해 봅시다.
 
-### How to configure a Codespace?
+### Codespace를 어떻게 구성하나요?
 
-Configuration is provided directly in the repository via the `.devcontainer/devcontainer.json`. You can even add multiple configurations!
+구성은 저장소의 `.devcontainer/devcontainer.json`을 통해 직접 제공됩니다. 여러 구성을 추가할 수도 있습니다!
 
-Let's create this file and set a few of the most common settings. For other options like setting configuring VS Code, forwarding ports, and running lifecycle scripts, see the [Codespaces documentation](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces) on GitHub.
+이 파일을 만들고 가장 일반적인 설정 몇 가지를 설정해 봅시다. VS Code 설정, 포트 포워딩, 생명주기 스크립트 실행 등 다른 옵션은 GitHub의 [Codespaces 문서](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces)를 참조하세요.
 
-### ⌨️ Activity: Customize the codespace
+### ⌨️ 활동: Codespace 커스터마이징하기
 
-1. Ensure you are in the VS Code Codespace.
+1. VS Code Codespace에 있는지 확인하세요.
 
-1. Use the VS Code file explorer to create the configuration file.
+1. VS Code 파일 탐색기를 사용하여 구성 파일을 만드세요.
 
    ```txt
    .devcontainer/devcontainer.json
    ```
 
-   Alternately, run the below terminal command to create it.
+   또는 아래 터미널 명령을 실행하여 만들 수 있습니다.
 
    ```bash
    mkdir -p .devcontainer
    touch .devcontainer/devcontainer.json
    ```
 
-1. Open the `.devcontainer/devcontainer.json` file and add the following content. Let's start with a basic image.
+1. `.devcontainer/devcontainer.json` 파일을 열고 다음 내용을 추가하세요. 기본 이미지로 시작합시다.
 
    ```json
    {
@@ -36,17 +36,17 @@ Let's create this file and set a few of the most common settings. For other opti
    }
    ```
 
-   > 💡 **Tip**: The name is optional but it will help identify the configuration when creating a codespace on GitHub, if there are multiple options.
+   > 💡 **팁**: 이름은 선택사항이지만, 여러 옵션이 있는 경우 GitHub에서 Codespace를 만들 때 구성을 식별하는 데 도움이 됩니다.
 
-1. After saving, VS Code likely popped up a notification that it detected a configuration change. You can **Accept** that option to rebuild the development container or manually use the Command Palette (`CTRL`+`Shift`+`P`) and run the command `Codespaces: Rebuild Container`. Select the **Rebuild** option. A full build is not necessary.
+1. 저장 후, VS Code가 구성 변경을 감지했다는 알림을 표시할 수 있습니다. **Accept** 옵션을 선택하여 개발 컨테이너를 다시 빌드하거나, 수동으로 명령 팔레트(`CTRL`+`Shift`+`P`)를 사용하여 `Codespaces: Rebuild Container` 명령을 실행하세요. **Rebuild** 옵션을 선택하세요. 전체 빌드는 필요하지 않습니다.
 
-   <img width="350" alt="rebuild codespace command" src="../images/rebuild-codespace-command.png"/>
+   <img width="350" alt="Codespace 다시 빌드 명령" src="https://raw.githubusercontent.com/skills-kr/code-with-codespaces/main/.github/images/rebuild-codespace-command.png"/>
 
-1. Wait a few minutes for the Codespace to rebuild and VS Code to reconnect.
+1. Codespace가 다시 빌드되고 VS Code가 다시 연결될 때까지 몇 분 기다리세요.
 
-1. Expand the lower panel and select the **TERMINAL** tab.
+1. 하단 패널을 확장하고 **터미널** 탭을 선택하세요.
 
-1. Use the following command to check the tool versions again. Notice that none are installed now!
+1. 다음 명령을 사용하여 도구 버전을 다시 확인하세요. 이제 아무것도 설치되어 있지 않은 것을 확인하세요!
 
    ```bash
    node --version
@@ -55,7 +55,7 @@ Let's create this file and set a few of the most common settings. For other opti
    gh --version
    ```
 
-1. ⚠️ There is currently a bug with Codespaces that expects [Git-LFS](https://git-lfs.com/) to be installed. Run the following command to remove the affected Git hooks.
+1. ⚠️ 현재 Codespaces에 [Git-LFS](https://git-lfs.com/)가 설치되어 있어야 하는 버그가 있습니다. 다음 명령을 실행하여 영향받는 Git 훅을 제거하세요.
 
    ```bash
    rm .git/hooks/post-checkout
@@ -64,7 +64,7 @@ Let's create this file and set a few of the most common settings. For other opti
    rm .git/hooks/pre-push
    ```
 
-1. With our new configuration verified, let's commit the changes. Use VS Code's source control tools or the below terminal command.
+1. 새 구성이 확인되었으니, 변경사항을 커밋합시다. VS Code의 소스 제어 도구를 사용하거나 아래 터미널 명령을 사용하세요.
 
    ```bash
    git add '.devcontainer/devcontainer.json'
@@ -72,4 +72,4 @@ Let's create this file and set a few of the most common settings. For other opti
    git push
    ```
 
-1. With our dev container configuration committed, Mona will begin checking your work. Give her a moment to provide feedback and the next learning steps.
+1. Dev Container 구성이 커밋되면, Mona가 작업을 확인하기 시작합니다. 피드백과 다음 학습 단계를 제공할 때까지 잠시 기다려 주세요.

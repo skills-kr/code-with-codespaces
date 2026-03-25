@@ -1,30 +1,30 @@
-## Step 3: Add Features
+## 3단계: 기능(Features) 추가하기
 
-You can further customize your codespace by adding container feature, VS Code extensions, VS Code settings, host requirements, and much more.
+컨테이너 기능, VS Code 확장 프로그램, VS Code 설정, 호스트 요구사항 등을 추가하여 Codespace를 더 커스터마이징할 수 있습니다.
 
-Let's add the GitHub CLI, extensions to run the python program using VS Code, and a custom script to install some packages when first creating the Codespace.
+GitHub CLI를 추가하고, VS Code에서 Python 프로그램을 실행하기 위한 확장 프로그램을 추가하고, Codespace를 처음 만들 때 일부 패키지를 설치하는 커스텀 스크립트를 추가해 봅시다.
 
-### ⌨️ Activity: Add support for the Python
+### ⌨️ 활동: Python 지원 추가하기
 
-1. In VS Code, open the Command Palette (`CTRL`+`SHIFT`+`P`) and select the below command.
+1. VS Code에서 명령 팔레트(`CTRL`+`SHIFT`+`P`)를 열고 아래 명령을 선택하세요.
 
    ```txt
    Codespaces: Add Dev Container Configuration Files...
    ```
 
-   <img width="350" alt="vs code configure dev container command" src="../images/configure-dev-container-command.png" />
+   <img width="350" alt="VS Code Dev Container 구성 명령" src="https://raw.githubusercontent.com/skills-kr/code-with-codespaces/main/.github/images/configure-dev-container-command.png" />
 
-1. Select the option `Modify your active configuration...`.
+1. `Modify your active configuration...` 옵션을 선택하세요.
 
-1. In the list of features, search for and select `Python` from `devcontainers`.
+1. 기능 목록에서 `devcontainers`의 `Python`을 검색하고 선택하세요.
 
-   - Instead of the defaults, pick `Configure Options`.
-   - Leave `Install Tools` set to `true`.
-   - Select Python version: `3.10`
+   - 기본값 대신 `Configure Options`를 선택하세요.
+   - `Install Tools`는 `true`로 두세요.
+   - Python 버전 선택: `3.10`
 
-1. Navigate to and open the `.devcontainer/devcontainer.json` file.
+1. `.devcontainer/devcontainer.json` 파일로 이동하여 여세요.
 
-1. Verify a new entry similar to the below was added.
+1. 아래와 유사한 새 항목이 추가되었는지 확인하세요.
 
    ```json
    "features": {
@@ -35,23 +35,23 @@ Let's add the GitHub CLI, extensions to run the python program using VS Code, an
    },
    ```
 
-### ⌨️ Activity: Add VS Code extensions
+### ⌨️ 활동: VS Code 확장 프로그램 추가하기
 
-1. In the left navigation, select the **Extension** tab.
+1. 왼쪽 탐색에서 **확장 프로그램** 탭을 선택하세요.
 
-   <img width="200" alt="vs code extensions tab" src="../images/vs-code-extensions-tab.png" />
+   <img width="200" alt="VS Code 확장 프로그램 탭" src="https://raw.githubusercontent.com/skills-kr/code-with-codespaces/main/.github/images/vs-code-extensions-tab.png" />
 
-1. Search for `python` and find entries for `Python` and `Python Debugger`.
+1. `python`을 검색하고 `Python`과 `Python Debugger` 항목을 찾으세요.
 
-   <img width="250" alt="python extensions for vs code" src="../images/python-extensions.png" />
+   <img width="250" alt="VS Code용 Python 확장 프로그램" src="https://raw.githubusercontent.com/skills-kr/code-with-codespaces/main/.github/images/python-extensions.png" />
 
-1. Right click on each entry and select the `Add to devcontainer.json` option.
+1. 각 항목을 마우스 오른쪽 클릭하고 `Add to devcontainer.json` 옵션을 선택하세요.
 
-   <img width="250" alt="add to devcontainer config button" src="../images/add-to-devcontainer-button.png" />
+   <img width="250" alt="devcontainer 구성에 추가 버튼" src="https://raw.githubusercontent.com/skills-kr/code-with-codespaces/main/.github/images/add-to-devcontainer-button.png" />
 
-1. Navigate to and open the `.devcontainer/devcontainer.json` file.
+1. `.devcontainer/devcontainer.json` 파일로 이동하여 여세요.
 
-1. Verify a new entry similar to the below was added.
+1. 아래와 유사한 새 항목이 추가되었는지 확인하세요.
 
    ```json
    "customizations": {
@@ -64,29 +64,29 @@ Let's add the GitHub CLI, extensions to run the python program using VS Code, an
    },
    ```
 
-### ⌨️ Activity: Add a custom script
+### ⌨️ 활동: 커스텀 스크립트 추가하기
 
-The Dev Container specification provides multiple locations to run [lifecycle scripts](https://containers.dev/implementors/json_reference/#lifecycle-scripts) to further customize your Codespace. Let's add the `postCreateCommand` which runs one time after initial build (or rebuild).
+Dev Container 사양은 Codespace를 더 커스터마이징하기 위해 [생명주기 스크립트](https://containers.dev/implementors/json_reference/#lifecycle-scripts)를 실행할 수 있는 여러 위치를 제공합니다. 초기 빌드(또는 다시 빌드) 후 한 번 실행되는 `postCreateCommand`를 추가해 봅시다.
 
-1. Use the VS Code file explorer to create a script file with the below name.
+1. VS Code 파일 탐색기를 사용하여 아래 이름의 스크립트 파일을 만드세요.
 
    ```txt
    .devcontainer/postCreate.sh
    ```
 
-   Alternately, run the below terminal command to create it.
+   또는 아래 터미널 명령을 실행하여 만들 수 있습니다.
 
    ```bash
    touch .devcontainer/postCreate.sh
    ```
 
-1. Make the script executable by running the below terminal command.
+1. 아래 터미널 명령을 실행하여 스크립트를 실행 가능하게 만드세요.
 
    ```bash
    chmod +x .devcontainer/postCreate.sh
    ```
 
-1. Open the `.devcontainer/postCreate.sh` file and add the following code, which will install an animation of a steam locomotive.
+1. `.devcontainer/postCreate.sh` 파일을 열고 다음 코드를 추가하세요. 증기 기관차 애니메이션을 설치합니다.
 
    ```bash
    #!/bin/bash
@@ -97,15 +97,15 @@ The Dev Container specification provides multiple locations to run [lifecycle sc
    echo "export PATH=\$PATH:/usr/games" >> ~/.zshrc
    ```
 
-1. Navigate to and open the `.devcontainer/devcontainer.json` file.
+1. `.devcontainer/devcontainer.json` 파일로 이동하여 여세요.
 
-1. Create the `postCreateCommand` entry at the same level (_top level_) as `features`, and `customizations`.
+1. `features`, `customizations`와 같은 수준(_최상위 수준_)에 `postCreateCommand` 항목을 만드세요.
 
    ```json
    "postCreateCommand": ".devcontainer/postCreate.sh"
    ```
 
-1. With our new configuration finished, let's commit the changes. Use VS Code's source control tools or the below terminal command.
+1. 새 구성이 완료되었으니, 변경사항을 커밋합시다. VS Code의 소스 제어 도구를 사용하거나 아래 터미널 명령을 사용하세요.
 
    ```shell
    git add '.devcontainer/devcontainer.json'
@@ -114,34 +114,34 @@ The Dev Container specification provides multiple locations to run [lifecycle sc
    git push
    ```
 
-1. Open the VS Code Command Palette (`CTRL`+`Shift`+`P`) and run the `Codespaces: Rebuild Container` command. Select the **Rebuild** option. A full build is not necessary.
+1. VS Code 명령 팔레트(`CTRL`+`Shift`+`P`)를 열고 `Codespaces: Rebuild Container` 명령을 실행하세요. **Rebuild** 옵션을 선택하세요. 전체 빌드는 필요하지 않습니다.
 
-   <img width="350" alt="rebuild codespace command" src="../images/rebuild-codespace-command.png"/>
+   <img width="350" alt="Codespace 다시 빌드 명령" src="https://raw.githubusercontent.com/skills-kr/code-with-codespaces/main/.github/images/rebuild-codespace-command.png"/>
 
-1. Wait a few minutes for the Codespace to rebuild and VS Code to reconnect.
+1. Codespace가 다시 빌드되고 VS Code가 다시 연결될 때까지 몇 분 기다리세요.
 
-1. With the customizations committed, Mona will begin checking your work. Give her a moment to provide feedback and the next learning steps.
+1. 커스터마이징이 커밋되면, Mona가 작업을 확인하기 시작합니다. 피드백과 다음 학습 단계를 제공할 때까지 잠시 기다려 주세요.
 
 > [!TIP]
-> You can also configure your account to [install dotfiles](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account), allowing you to combine personal configurations with the project's configuration.
+> 계정에 [dotfiles 설치](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account)를 구성하여 개인 구성과 프로젝트 구성을 결합할 수도 있습니다.
 
-### ⌨️ Activity: (optional) Verify our customizations
+### ⌨️ 활동: (선택사항) 커스터마이징 확인하기
 
-Now that you've rebuilt the codespace, let's verify the python extension, python version, and custom script were adjusted correctly in the Codespace.
+Codespace를 다시 빌드했으니, Python 확장 프로그램, Python 버전, 커스텀 스크립트가 Codespace에서 올바르게 조정되었는지 확인해 봅시다.
 
-1. Ensure you are in the Codespace.
+1. Codespace에 있는지 확인하세요.
 
-1. In the left sidebar, click the extensions tab and verify that the Python extensions are installed and enabled.
+1. 왼쪽 사이드바에서 확장 프로그램 탭을 클릭하고 Python 확장 프로그램이 설치 및 활성화되었는지 확인하세요.
 
-   <img width="250" alt="python extensions for vs code" src="../images/python-extensions.png" />
+   <img width="250" alt="VS Code용 Python 확장 프로그램" src="https://raw.githubusercontent.com/skills-kr/code-with-codespaces/main/.github/images/python-extensions.png" />
 
-1. In the left sidebar, select **Run and Debug** tab and then press the **Start Debugging** icon. VS Code will open the lower panel and show the run logs.
+1. 왼쪽 사이드바에서 **실행 및 디버그** 탭을 선택한 다음 **디버깅 시작** 아이콘을 누르세요. VS Code가 하단 패널을 열고 실행 로그를 표시합니다.
 
-   <img width="250" alt="run and debug tab pointing to start button" src="../images/run-and-debug-start-button.png"/>
+   <img width="250" alt="실행 및 디버그 탭의 시작 버튼" src="https://raw.githubusercontent.com/skills-kr/code-with-codespaces/main/.github/images/run-and-debug-start-button.png"/>
 
-1. In the lower panel, switch to the **TERMINAL** tab.
+1. 하단 패널에서 **터미널** 탭으로 전환하세요.
 
-1. Run the following command to show the installed version of Python. Notice the others are not installed.
+1. 다음 명령을 실행하여 설치된 Python 버전을 확인하세요. 다른 도구들은 설치되어 있지 않은 것을 확인하세요.
 
    ```bash
    node --version
@@ -150,7 +150,7 @@ Now that you've rebuilt the codespace, let's verify the python extension, python
    gh --version
    ```
 
-1. Run the following command to show the steam locomotive animation.
+1. 다음 명령을 실행하여 증기 기관차 애니메이션을 확인하세요.
 
    ```bash
    sl
