@@ -90,7 +90,7 @@ jobs:
 
       - name: 메시지 빌드 - 단계 결과
         id: build-message-step-results
-        uses: skills/action-text-variables@v2
+        uses: skills/action-text-variables@v4
         with:
           template-file: exercise-toolkit/markdown-templates/step-feedback/step-results-table.md
           template-vars: |
@@ -123,7 +123,7 @@ jobs:
 
       - name: 메시지 빌드 - 단계 완료
         id: build-message-step-finish
-        uses: skills/action-text-variables@v2
+        uses: skills/action-text-variables@v4
         with:
           template-file: exercise-toolkit/markdown-templates/step-feedback/step-finished-prepare-next-step.md
           template-vars: |
